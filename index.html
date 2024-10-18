@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <script>
+        const txt = `
+        Congratulations on successfully conducting a JS Injection attack!
+        <br>
+        Here's your flag: NUV_CTF{W3LC0ME-T0-CTF-1337}
+        <br>
+        There's more where that came from!
+        <br>
+        <a href="https://forms.office.com/r/RLeSMHnnhx" target="_blank">Register Now!</a>
+        <img src="QRCode_for_CTF_Registration.png" alt="https://forms.office.com/r/RLeSMHnnhx">
+        `;
+        const originalAlert = window.alert;
+        function alertCallback(...args) {
+            document.getElementById("res1").innerHTML = txt;
+            console.log("Callback-ed!");
+
+            return originalAlert(args);
+        }
+
+        window.alert = alertCallback;
+        alert = alertCallback;
+        Object.defineProperty(globalThis, "alert", { value: alertCallback });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("form").addEventListener("submit", (e) => {
+                e.preventDefault();
+                let a = document.getElementById("sum").value;
+                document.getElementById("result").innerHTML = "The answer is: ";
+                document.getElementById("result").innerHTML += eval(a);
+            });
+        });
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        img {
+            display: block;
+            max-width: 50vw;
+            /* max-width: 100%; */
+            max-height: 50vh;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgb(238, 174, 202);
+            background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+        }
+
+        body>div {
+            text-align: center;
+        }
+
+        body>div>form>* {
+            padding: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem;
+            background-color: #e879f9;
+            border: 2px solid #c026d3;
+            border-radius: 0.25rem;
+            color: rgb(31 41 55);
+            transition-property: color, border-color;
+            transition-duration: 100ms;
+            transition-timing-function: linear;
+        }
+
+        .btn:hover,
+        .btn:active,
+        .btn:focus {
+            background-color: #c026d3;
+            color: rgb(243 244 246);
+        }
+
+        textarea {
+            background-color: transparent;
+            border-radius: 0.25rem;
+        }
+
+        label {
+            font-weight: 600;
+            font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            font-size: 1.25rem;
+            /* 20px */
+            line-height: 1.75rem;
+            /* 28px */
+            margin-block-end: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <noscript>
+        You'll want to enable javascript if you want to complete this challenge!
+    </noscript>
+    <div>
+        <form action="." method="get" id="form">
+            <label for="sum">Enter Mathematical Problem</label>
+            <br>
+            <textarea name="sum" id="sum"></textarea>
+            <div class="btns">
+                <input type="submit" value="Calculate" class="btn">
+                <input type="reset" value="Reset" class="btn">
+            </div>
+        </form>
+        <div class="result" id="result">
+            Enter mathematical problem to get a solution.
+            <br>
+            Try "13+37" to get started.
+        </div>
+        <div class="result" id="res1"></div>
+    </div>
+</body>
+
+</html>
